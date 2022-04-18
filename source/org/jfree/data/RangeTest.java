@@ -172,7 +172,7 @@ public class RangeTest {
 	
 	@Test
 	public void testIntersectsReturnsFalseWhenUpperInputIsEqualToUpperBoundOfRangeaAddOnendLowerInputIsOutsideOfRange() {
-		assertEquals("Upper input is equal to one under the upper bound of the range and lower input is outside of range so should return false",	
+		assertEquals("Upper input is equal to one over the upper bound of the range and lower input is outside of range so should return false",	
 				false, rangeObjectUnderTestIntersects.intersects(-91.0, 75));
 	}
 	
@@ -371,13 +371,13 @@ public class RangeTest {
 	@Test
 	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundandUpperBoundOfRange2IsWithinRange1() {
 		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound and upper bound of range2 is within range1 so should return range1",	
-				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-47, 10)));
+				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-47, 1)));
 	}
 	
 	@Test
 	public void testCombineReturnsRangeWithLowerBoundOfRange2AndUpperBoundOfRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundSubtractOneandUpperBoundOfRange2IsWithinRange1() {
 		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound add one and upper bound of range2 is within range1 so should return range with lower bound of range2 and upper bound of range1",	
-				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-47, 10)));
+				new Range(-48, 19), Range.combine(new Range(-47, 19), new Range(-48, 10)));
 	}
 	
 	@Test
@@ -401,6 +401,6 @@ public class RangeTest {
 	@Test
 	public void testCombineReturnsRangeWithLowerBoundOfRange1AndUpperBoundOfRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBoundAddOne() {
 		assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound subtract one and lower bound of range2 is within range1 so should return range1",	
-				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-36, 18)));
+				new Range(-47, 20), Range.combine(new Range(-47, 19), new Range(-36, 20)));
 	}
 }
