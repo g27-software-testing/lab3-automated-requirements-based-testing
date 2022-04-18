@@ -232,81 +232,175 @@ public class RangeTest {
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundEqualToValueWhenValueIsOutsideOfRangeOnTheLeftAndAllOfRangeIsPositive() {
-		System.out.println("RANGE01 RESULT");
-		System.out.println(Range.expandToInclude(new Range(40, 106), -20));
 		assertEquals("Value is outside of range on the left and all values in the range are positive so should return range with same upper bound and lower bound equal to value",
 				new Range(-20.0, 106.0), Range.expandToInclude(new Range(40, 106), -20));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameLowerBoundAndUpperBoundEqualToValueWhenValueIsOutsideOfRangeOnTheRightAndAllOfRangeIsPositive() {
-		System.out.println("RANGE02 RESULT");
-		System.out.println(Range.expandToInclude(new Range(25, 44), 52));
 		assertEquals("Value is outside of range on the right and all values in the range are positive so should return range with same lower bound and upper bound equal to value",	
 				new Range(25.0, 52.0), Range.expandToInclude(new Range(25, 44), 52));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameLowerBoundAndSameUpperBoundEqualToValueWhenValueIsInsideOfRangeAndAllOfRangeIsPositive() {
-		System.out.println("RANGE03 RESULT");
-		System.out.println(Range.expandToInclude(new Range(12, 67), 43));
 		assertEquals("Value is inside of range and all values in the range are positive so should return range with same lower bound and same upper bound",	
 				new Range(12.0, 67.0), Range.expandToInclude(new Range(12, 67), 43));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundEqualToValueWhenValueIsOutsideOfRangeOnTheLeftAndAllOfRangeIsNegative() {
-		System.out.println("RANGE04 RESULT");
-		System.out.println(Range.expandToInclude(new Range(-8, -2), -37));
 		assertEquals("Value is outside of range on the left and all values in the range are negative so should return range with same upper bound and lower bound equal to value",
 				new Range(-37, -2), Range.expandToInclude(new Range(-8, -2), -37));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameLowerBoundAndUpperBoundEqualToValueWhenValueIsOutsideOfRangeOnTheRightAndAllOfRangeIsNegative() {
-		System.out.println("RANGE05 RESULT");
-		System.out.println(Range.expandToInclude(new Range(-88, -32), 4));
 		assertEquals("Value is outside of range on the right and all values in the range are negative so should return range with same lower bound and upper bound equal to value",	
 				new Range(-88.0, 4.0), Range.expandToInclude(new Range(-88, -32), 4));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameLowerBoundAndSameUpperBoundEqualToValueWhenValueIsInsideOfRangeAndAllOfRangeIsNegative() {
-		System.out.println("RANGE06 RESULT");
-		System.out.println(Range.expandToInclude(new Range(12, 67), 43));
 		assertEquals("Value is inside of range and all values in the range are negative so should return range with same lower bound and same upper bound",	
 				new Range(-41.0, -17.0), Range.expandToInclude(new Range(-41, -17), -26));
 	}
 	
 	@Test
-	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundEqualToValueWhenValueIsOutsideOfRangeOnTheLeftAndLowerBoundOfRangeIsNegativeWhileUpperBoundIsPositivee() {
-		System.out.println("RANGE07 RESULT");
-		System.out.println(Range.expandToInclude(new Range(-8, -2), -37));
+	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundEqualToValueWhenValueIsOutsideOfRangeOnTheLeftAndLowerBoundOfRangeIsNegativeWhileUpperBoundIsPositive() {
 		assertEquals("Value is outside of range and the lower bound of the range is negative while the upper bound is positive so should return range with same upper bound and lower bound equal to value",
 				new Range(-37, -2), Range.expandToInclude(new Range(-8, -2), -37));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameLowerBoundAndUpperBoundEqualToValueWhenValueIsOutsideOfRangeOnTheRightAndLowerBoundOfRangeIsNegativeWhileUpperBoundIsPositive() {
-		System.out.println("RANGE08 RESULT");
-		System.out.println(Range.expandToInclude(new Range(-88, -32), 4));
 		assertEquals("Value is outside of range and the lower bound of the range is negative while the upper bound is positive so should return range with same lower bound and upper bound equal to value",	
 				new Range(-88.0, 4.0), Range.expandToInclude(new Range(-88, -32), 4));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameLowerBoundAndSameUpperBoundEqualToValueWhenValueIsInsideOfRangeAndLowerBoundOfRangeIsNegativeWhileUpperBoundIsPositive() {
-		System.out.println("RANGE09 RESULT");
-		System.out.println(Range.expandToInclude(new Range(12, 67), 43));
 		assertEquals("Value is inside of range and the lower bound of the range is negative while the upper bound is positive so should return range with same lower bound and same upper bound",	
 				new Range(-41.0, -17.0), Range.expandToInclude(new Range(-41, -17), -26));
 	}
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithLowerBoundAndUpperBoundEqualtoValueWhenRangeIsNull() {
-		System.out.println("RANGE10 RESULT");
-		System.out.println(Range.expandToInclude(null, 15));
 		assertEquals("Value is outside of range on the right and all values in the range are negative so should return range with same lower bound and upper bound equal to value",	
 				new Range(15.0, 15.0), Range.expandToInclude(null, 15));
+	}
+	
+	@Test
+	public void testExpandToIncludeReturnsSameRangeWhenValueIsEqualToLowerBoundOfRange() {
+		assertEquals("Value is equal to lower of range so should return range with same upper and lower bound",	
+				new Range(34.0, 56.0), Range.expandToInclude(new Range(34, 56), 34));
+	}
+	
+	@Test
+	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundEqualToValueWhenValueIsEqualToLowerBoundOfRangeSubtractOne() {
+		assertEquals("Value is equal to lower of range subtract one so should return range with same upper bound and lower bound equal to value",	
+				new Range(33.0, 56.0), Range.expandToInclude(new Range(34, 56), 33));
+	}
+	
+	@Test
+	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundWhenValueIsEqualToLowerBoundOfRangeAddOne() {
+		assertEquals("Value is equal to lower of range subtract one so should return range with same upper bound and lower bound equal to value",	
+				new Range(34.0, 56.0), Range.expandToInclude(new Range(34, 56), 35));
+	}
+	
+	@Test
+	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundWhenValueIsEqualToUpperBoundOfRange() {
+		assertEquals("Value is equal to upper of range so should return range with same upper and lower bound",	
+				new Range(34.0, 56.0), Range.expandToInclude(new Range(34, 56), 56));
+	}
+	
+	@Test
+	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundWhenValueIsEqualToUpperBoundOfRangeSubtractOne() {
+		assertEquals("Value is equal to lower of range subtract one so should return range with same upper bound and lower bound equal to value",	
+				new Range(34.0, 56.0), Range.expandToInclude(new Range(34, 56), 55));
+	}
+	
+	@Test
+	public void testExpandToIncludeReturnsRangeWithSameLowerBoundAndUpperBoundEqualToValueWhenValueIsEqualToUpperBoundOfRangeAddOne() {
+		assertEquals("Value is equal to upper bound of range add one so should return range with same lower bound and upper bound equal to value",	
+				new Range(34.0, 57.0), Range.expandToInclude(new Range(34, 56), 57));
+	}
+	
+	@Test
+	public void testCombineReturnsNullRangeWhenBothRangesAreNull() {
+		assertEquals("Both Ranges are equal to null so should return null range",	
+				null, Range.combine(null, new Range(2, 13)));
+	}
+	
+	@Test
+	public void testCombineReturnsRange2WhenRange1IsNullAndRange2IsValid() {
+		assertEquals("Range1 is null and range2 is valid so should return range2",	
+				new Range(2, 13), Range.combine(null, new Range(2, 13)));
+	}
+	
+	@Test
+	public void testCombineReturnsRange1WhenRange2IsNullAndRange1IsValid() {
+		assertEquals("Range2 is null and range1 is valid so should return range1",	
+				new Range(47, 109), Range.combine(new Range(47, 109), null));
+	}
+	
+	@Test
+	public void testCombineReturnsRange1WhenRange1IsValidAndRange2IsWithinRange1() {
+		assertEquals("Range1 is valid and range2 is within range1 so should return range1",	
+				new Range(-3, 34), Range.combine(new Range(-3, 34), new Range(7, 18)));
+	}
+	
+	@Test
+	public void testCombineReturnsRangeWithLowerBoundOfRange2AndUpperBoundOfRange1WhenRange1IsValidAndRange2ExtendsOutsideOfRange1ToTheLeft() {
+		assertEquals("Range1 is valid and range2 extends outside of range1 to the left so should return range with lower bound of range2 and upper bound of range1",	
+				new Range(-78, 7), Range.combine(new Range(-26, 7), new Range(-78, 0)));
+	}
+	
+	@Test
+	public void testCombineReturnsRangeWithLowerBoundOfRange1AndUpperBoundOfRange2WhenRange1IsValidAndRange2ExtendsOutsideOfRange1ToTheRight() {
+		assertEquals("Range1 is valid and range2 extends outsid eof range 1 to the right so should return range with lower bound of range1 and upper bound of range2",	
+				new Range(58, 111), Range.combine(new Range(58, 100), new Range(92, 111)));
+	}
+	
+	@Test
+	public void testCombineReturnsRange2WhenRange1IsValidAndRange2ExtendsOutsideOfRange1ToTheRightAndLeft() {
+		assertEquals("Range1 is valid and range2 extends outside of range 1 to the right and left so should return range with lower bound of range1 and upper bound of range2",	
+				new Range(5, 99), Range.combine(new Range(31, 78), new Range(5, 99)));
+	}
+	
+	@Test
+	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundandUpperBoundOfRange2IsWithinRange1() {
+		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound and upper bound of range2 is within range1 so should return range1",	
+				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-47, 10)));
+	}
+	
+	@Test
+	public void testCombineReturnsRangeWithLowerBoundOfRange2AndUpperBoundOfRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundSubtractOneandUpperBoundOfRange2IsWithinRange1() {
+		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound add one and upper bound of range2 is within range1 so should return range with lower bound of range2 and upper bound of range1",	
+				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-47, 10)));
+	}
+	
+	@Test
+	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundAddOneandUpperBoundOfRange2IsWithinRange1() {
+		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound add one and upper bound of range2 is within range1 so should return range with lower bound of range2 and upper bound of range1",	
+				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-46, 8)));
+	}
+	
+	@Test
+	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBound() {
+		assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound and lower bound of range2 is within range1 so should return range1",	
+				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-40, 19)));
+	}
+	
+	@Test
+	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBoundSubtractOne() {
+		assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound subtract one and lower bound of range2 is within range1 so should return range1",	
+				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-36, 18)));
+	}
+	
+	@Test
+	public void testCombineReturnsRangeWithLowerBoundOfRange1AndUpperBoundOfRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBoundAddOne() {
+		assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound subtract one and lower bound of range2 is within range1 so should return range1",	
+				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-36, 18)));
 	}
 }
