@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 
 import org.jfree.data.DataUtilities;
@@ -20,6 +19,8 @@ public class DataUtilitiesTest {
 	
 	private Values2D values2D;
 	private Values2D values2DEmpty;
+	private DefaultKeyedValues dataKeys;
+	private Values2D values2DNull = null;
 	
 	@Before
 	public void setUp()
@@ -46,9 +47,17 @@ public class DataUtilitiesTest {
 		
 		double[] doubleArray = {1.0, 2.0};
 		
+		values2DEmpty = new DefaultKeyedValues2D();
+
+		
+		dataKeys = new DefaultKeyedValues();
+		
+		dataKeys.addValue("0", 5.0);
+		dataKeys.addValue("1", 9.0);
+		dataKeys.addValue("2", 2.0);
 		
 		
-		System.out.println(DataUtilities.createNumberArray(doubleArray));
+		//System.out.println(DataUtilities.createNumberArray(doubleArray));
 		
 		
 
@@ -64,6 +73,8 @@ public class DataUtilitiesTest {
 	@After
 	public void tearDown() {
 		values2D = null;
+		values2DEmpty = null;
+		dataKeys = null;
 	}
 	
 	
@@ -88,9 +99,9 @@ public class DataUtilitiesTest {
 	//Tests for calculateColumnTotal()
 	
 	@Test
-	public void testCalculateColumnTotalReturns0WhenColumnisNegative5() {
+	public void testCalculateColumnTotalReturnsZeroWhenColumnisNegative5() {
 		try {
-		assertTrue("Should return 0.0", DataUtilities.calculateColumnTotal(values2D, -5) == 0.0);
+		assertEquals("Should return 0.0", 0.0, DataUtilities.calculateColumnTotal(values2D, -5), 0.0000001d);
 	}
 	catch (Exception e) {
 		fail("Did not return 0.0");
@@ -98,11 +109,20 @@ public class DataUtilitiesTest {
 
 }
 	
+	@Test
+	public void testCalculateColumnTotalReturnsExpectedAnswerWhenValidInputIsEntered() {
+		
+		assertEquals("Should return 10.0", 10.0, DataUtilities.calculateColumnTotal(values2D, 2), 0.0000001d);
+
+			
+	}
+	
 	
 	@Test
-	public void testCalculateColumnTotalReturns0WhenColumnis9() {
+	public void testCalculateColumnTotalReturnsZeroWhenColumnis9() {
 		try {
-			assertTrue("Should return 0.0", (DataUtilities.calculateColumnTotal(values2D, 9) == 0.0));
+			assertEquals("Should return 0.0", 0.0, DataUtilities.calculateColumnTotal(values2D, 9), 0.0000001d);
+
 	}
 	catch (Exception e) {
 		fail("Did not return 0.0");
@@ -112,90 +132,65 @@ public class DataUtilitiesTest {
 	}
 	
 	
-	@Test
-	public void testCalculateColumnTotalReturnsExpectedAnswerWhenValidInputIsEntered() {
-		
-		assertTrue(DataUtilities.calculateColumnTotal(values2D, 0) == 5.0);
-			
-	}
-	
-	
-
-	@Test
-	public void testCalculateColumnTotalThrowsInvalidParameterExceptionWhenDataisEmpty() {
-		
-		values2DEmpty = new DefaultKeyedValues2D();
-
-		
-		try {
-			DataUtilities.calculateColumnTotal(values2DEmpty, 1);
-			fail("No exception thrown‐Expected outcome was: a thrown exception of type: InvalidParameterException");
-
-		}
-		catch (Exception e) {
-			assertTrue("Incorrect exception type thrown",
-					e.getClass().equals(InvalidParameterException.class));
-		}
-
-	}
 	
 	
 	@Test
-	public void testCalculateColumnTotalThrowsInvalidParameterExceptionWhenDataisEmptyAndColumnisNegative24() {
+	public void testCalculateColumnTotalReturnsZeroWhenDataisEmptyAndColumnisNegative24() {
 		
 		
 		try {
-			DataUtilities.calculateColumnTotal(values2DEmpty, -24);
-			fail("No exception thrown‐Expected outcome was: a thrown exception of type: InvalidParameterException");
+			assertEquals("Should return 0.0", 0.0, DataUtilities.calculateColumnTotal(values2DEmpty, -24), 0.0000001d);
 
-		}
-		catch (Exception e) {
-			assertTrue("Incorrect exception type thrown",
-					e.getClass().equals(InvalidParameterException.class));
-		}
+	}
+	catch (Exception e) {
+		fail("Did not return 0.0");
+	}
 
 	}
 		
 
 	@Test
-	public void testCalculateColumnTotalThrowsInvalidParameterExceptionWhenDataisNullAndColumnIs1() {
+	public void testCalculateColumnTotalThrowsIllegalArgumentExceptionWhenDataisNullAndColumnIs1() {
 		
 		
 		try {
 			DataUtilities.calculateColumnTotal(null, 1);
-			fail("No exception thrown‐Expected outcome was: a thrown exception of type: InvalidParameterException");
+			fail("No exception thrown‐Expected outcome was: a thrown exception of type: IllegalArgumentException");
 
 		}
 		catch (Exception e) {
-			assertTrue("Incorrect exception type thrown",
-					e.getClass().equals(InvalidParameterException.class));
+			assertTrue("Correct exception type thrown",
+					e.getClass().equals(IllegalArgumentException.class));
 		}
 
 	}
 		
 	
 	@Test
-	public void testCalculateColumnTotalThrowsInvalidParameterExceptionWhenDataisEmptyAndColumnIs20() {
+	public void testCalculateColumnTotalReturnsZeroWhenDataisEmptyAndColumnIs20() {
 		
-		values2DEmpty = new DefaultKeyedValues2D();
+		try {
+			assertEquals("Should return 0.0", 0.0, DataUtilities.calculateColumnTotal(values2DEmpty, 20), 0.0000001d);
 
-		assertTrue(DataUtilities.calculateColumnTotal(values2DEmpty, 20) == 0.0);
-			
+	}
+	catch (Exception e) {
+		fail("Did not return 0.0");
+	}	
 	}
 		
 	
 	//Boundary Value Analysis
 	
 	@Test
-	public void testCalculateColumnTotalReturns0WhenColumnIsNegative1() {
+	public void testCalculateColumnTotalReturnsZeroWhenColumnIsNegative1() {
 		
 		try {
-		assertTrue(DataUtilities.calculateColumnTotal(values2D, -1) == 0.0);
+			assertEquals(0.0, DataUtilities.calculateColumnTotal(values2D, -1), 0.0000001d);
+
 	}
 	catch (Exception e) {
 		fail("Did not return 0.0");
 
-		
 	}
 		
 	}
@@ -203,37 +198,71 @@ public class DataUtilitiesTest {
 	@Test
 	public void testCalculateColumnTotalReturnsExpectedAnswerWhenColumnIs0() {
 		
-		assertTrue(DataUtilities.calculateColumnTotal(values2D, 0) == 5.0);
+		try {
+		assertEquals(5.0, DataUtilities.calculateColumnTotal(values2D, 0), 0.0000001d);
+		
+
+	}
+	catch (Exception e) {
+		fail("Did not return 0.0");
+
+	}
 			
 	}
 	
 	@Test
 	public void testCalculateColumnTotalReturnsExpectedAnswerWhenColumnIs1() {
 		
-		assertTrue(DataUtilities.calculateColumnTotal(values2D, 1) == 8.0);
+		try {
+
+		assertEquals(8.0, DataUtilities.calculateColumnTotal(values2D, 1), 0.0000001d);
+		
+		
+
+	}
+	catch (Exception e) {
+		fail("Did not return 0.0");
+
+	}
 			
 	}
 	
 	@Test
 	public void testCalculateColumnTotalReturnsExpectedAnswerWhenColumnIs3() {
 		
-		assertTrue(DataUtilities.calculateColumnTotal(values2D, 3) == 9.0);
+		try {
+
+		assertEquals(9.0, DataUtilities.calculateColumnTotal(values2D, 3), 0.0000001d);
 			
+		}
+		catch (Exception e) {
+			fail("Did not return 0.0");
+
+		}
+		
 	}
 	
 	@Test
 	public void testCalculateColumnTotalReturnsExpectedAnswerWhenColumnIs4() {
 		
-		assertTrue(DataUtilities.calculateColumnTotal(values2D, 4) == 3.0);
+		try {
+		
+		assertEquals(3.0, DataUtilities.calculateColumnTotal(values2D, 4), 0.0000001d);
+		
+	}
+	catch (Exception e) {
+		fail("Did not return 0.0");
+
+	}
 			
 	}
 	
 	@Test
-	public void testCalculateColumnTotalReturnsExpectedAnswerWhenColumnIs5() {
+	public void testCalculateColumnTotalReturnsZeroWhenColumnIs5() {
 		
 		try {
 		
-		assertTrue(DataUtilities.calculateColumnTotal(values2D, 5) == 0.0);
+		assertEquals(0.0, DataUtilities.calculateColumnTotal(values2D, 5), 0.0000001d);
 		
 		}
 		catch (Exception e) {
@@ -245,10 +274,10 @@ public class DataUtilitiesTest {
 	
 	//calculateRowTotal() tests
 	@Test
-	public void testCalculateRowTotalReturns0WhenRowisNegative4() {
+	public void testCalculateRowTotalReturnsZeroWhenRowisNegative4() {
 		try {
 	
-		assertTrue(DataUtilities.calculateRowTotal(values2D, -4) == 0.0);}
+		assertEquals(0.0, DataUtilities.calculateRowTotal(values2D, -4), 0.0000001d);}
 		
 		catch (Exception e) {
 			fail("Did not return 0.0");
@@ -257,82 +286,114 @@ public class DataUtilitiesTest {
 
 	@Test
 	public void testCalculateRowTotalReturns24WhenRowis1() {
-		assertTrue(DataUtilities.calculateRowTotal(values2D, 1) == 24.0);
+		try {
+		assertEquals(24.0, DataUtilities.calculateRowTotal(values2D, 1), 0.0000001d);
+		}
+		
+		catch (Exception e) {
+			fail("Did not return 24.0");
+		}
+
 		
 	}
 	
 	@Test
-	public void testCalculateRowTotalThrowsInvalidParameterExceptionWhenDataisNullAndRowisNegative9() {
+	public void testCalculateRowTotalReturnsZeroWhenRowis100() {
+		
 		try {
-		DataUtilities.calculateRowTotal(null, -9);
+		assertEquals(0.0, DataUtilities.calculateRowTotal(values2D, 100), 0.0000001d);
+		
+		}
+		
+		catch (Exception e) {
+			fail("Did not return 0.0");
+		}
+
+	}
+	
+	@Test
+	public void testCalculateRowTotalThrowsIllegalArgumentExceptionWhenDataisNullAndRowisNegative9() {
+		try {
+		DataUtilities.calculateRowTotal(values2DNull, -9);
+		fail("Did not throw exception - expected IllegalArgumentException");
 		
 	}
 		catch (Exception e) {
 			assertTrue("Correct exception type thrown",
-					e.getClass().equals(InvalidParameterException.class));
+					e.getClass().equals(IllegalArgumentException.class));
 		}
 		
 	}
 	
 	
 	@Test
-	public void testCalculateRowTotalThrowsInvalidParameterExceptionWhenDataisNullAndRowis1() {
+	public void testCalculateRowTotalThrowsIllegalArgumentExceptionWhenDataisNullAndRowis1() {
 		try {
-		DataUtilities.calculateRowTotal(null, 1);
+		DataUtilities.calculateRowTotal(values2DNull, 1);
+		fail("Did not throw exception - expected IllegalArgumentException");
 		
 	}
 		catch (Exception e) {
 			assertTrue("Correct exception type thrown",
-					e.getClass().equals(InvalidParameterException.class));
+					e.getClass().equals(IllegalArgumentException.class));
 		}
 		
 	}
 	
 	@Test
-	public void testCalculateRowTotalThrowsInvalidParameterExceptionWhenDataisEmptyAndRowis200() {
+	public void testCalculateRowTotalReturnsZeroWhenDataisEmptyAndRowis200() {
 		try {
-		DataUtilities.calculateRowTotal(values2DEmpty, 200);
+			assertEquals(0.0, DataUtilities.calculateRowTotal(values2DEmpty, 200), 0.0000001d);
+
 		
 	}
-		catch (Exception e) {
-			assertTrue("Correct exception type thrown",
-					e.getClass().equals(InvalidParameterException.class));
-		}
-		
+	
+	
+	catch (Exception e) {
+		fail("Did not return 0.0");
+	}
+
 	}
 	
 	
 	//Boundary Value Analysis
 
 	@Test
-	public void testCalculateRowTotalReturns0WhenRowIsNegative1() {
+	public void testCalculateRowTotalReturnsZeroWhenRowIsNegative1() {
 		try {
-		assertTrue(DataUtilities.calculateRowTotal(values2D, -1) == 0.0);}
+			assertEquals(0.0, DataUtilities.calculateRowTotal(values2D, -1), 0.0000001d);
+
+		}
+		
 		catch (Exception e) {
-			assertTrue("Correct exception type thrown",
-					e.getClass().equals(InvalidParameterException.class));
+			fail("Did not return 0.0");
 		}
 	}
 	
 	@Test
 	public void testCalculateRowTotalReturnsExpectedAnswerWhenRowIs0() {
 		
-		assertTrue(DataUtilities.calculateRowTotal(values2D, 0) == 11.0);
-			
-	}
-	
-	@Test
-	public void testCalculateRowTotalReturnsExpectedAnswerWhenRowIs1() {
-		
-		assertTrue(DataUtilities.calculateRowTotal(values2D, 1) == 24.0);
-			
-	}
-	
-	
-	@Test
-	public void testCalculateRowTotalReturns0WhenRowIs2() {
 		try {
-		assertTrue(DataUtilities.calculateRowTotal(values2D, 2) == 0.0);}
+		assertEquals(11.0, DataUtilities.calculateRowTotal(values2D, 0), 0.0000001d);
+		
+	}
+	
+	
+	catch (Exception e) {
+		fail("Did not return 11.0");
+	}
+
+			
+	}
+	
+
+	
+	@Test
+	public void testCalculateRowTotalReturnsZeroWhenRowIs2() {
+		try {
+			assertEquals(0.0, DataUtilities.calculateRowTotal(values2D, 2), 0.0000001d);
+
+		}
 		catch (Exception e) {
 			fail("Did not return 0.0");
 		}
@@ -345,15 +406,16 @@ public class DataUtilitiesTest {
 	public void testCreateNumberArrayReturnsNumberArrayof2and1() {
 		
 		double[] doubleArray = {1.0, 2.0};
+		Number[] numArray = {1,2};
 		
 		assertTrue(DataUtilities.createNumberArray(doubleArray) instanceof java.lang.Number[]);
+		Arrays.deepEquals(DataUtilities.createNumberArray(doubleArray), numArray);
 			
 	}
 	
 	
-	//Getting illegal argument exception
 	@Test
-	public void testCreateNumberArrayThrowsInvalidParameterExceptionWhenArrayisEmpty() {
+	public void testCreateNumberArrayThrowsIllegalArgumentExceptionWhenArrayisNull() {
 		
 		double[] doubleArray = null;
 		
@@ -364,7 +426,7 @@ public class DataUtilitiesTest {
 		}
 			catch (Exception e) {
 				assertTrue("Correct exception type thrown",
-						e.getClass().equals(InvalidParameterException.class));
+						e.getClass().equals(IllegalArgumentException.class));
 			}
 			
 		}
@@ -377,23 +439,25 @@ public class DataUtilitiesTest {
 		
 		double[][] double2DArray = { {0.0, 1.1}, {1.1, 2.2}, {3.3, 1.4}};
 		
-		int[][] int2DArray = { {0, 1}, {1, 2}, {3, 1}};
+		
+		Number[][] num2DArray = { {0, 1}, {1, 2}, {3, 1}};
 
 		
 		System.out.println(double2DArray);
 
 			Number[][] result = DataUtilities.createNumberArray2D(double2DArray);
 			
-			assertTrue("Correct exception type thrown",
+			assertTrue("result is an instance of Number[][]",
 					(result instanceof java.lang.Number[][]));
-	
 			
+			Arrays.deepEquals(result, num2DArray);
+	
 		}
 	
 	
 
 	@Test
-	public void testCreateNumberArray2DReturnsInvalidParameterExceptionWhenDataisEmpty() {
+	public void testCreateNumberArray2DReturnsIllegalArgumentExceptionWhenDataisNull() {
 		
 		double [] [] data = null;
 
@@ -403,7 +467,7 @@ public class DataUtilitiesTest {
 		}
 			catch (Exception e) {
 				assertTrue("Correct exception type thrown",
-						e.getClass().equals(InvalidParameterException.class));
+						e.getClass().equals(IllegalArgumentException.class));
 			}
 			
 		}
@@ -415,24 +479,14 @@ public class DataUtilitiesTest {
 	@Test
 	public void testGetCumulativePercentagesReturnsCorrectAnswerExceptionWhenDataisValid() {
 
-		DefaultKeyedValues dataKeys = new DefaultKeyedValues();
-		
-		dataKeys.addValue("0", 5);
-		dataKeys.addValue("1", 9);
-		dataKeys.addValue("2", 2);
-		
-
 		try {
 			
 		   
-		   KeyedValues result = DataUtilities.getCumulativePercentages(dataKeys);
-		  		   		   
-		   assertTrue((double)result.getValue(0) == 0.3125);
-		   assertTrue((double)result.getValue(1) == 0.875);
-		   assertTrue((double)result.getValue(2) == 1.0);
-
-
-			
+		   KeyedValues result = DataUtilities.getCumulativePercentages((KeyedValues)dataKeys);
+		   assertEquals("Should return 0.3125", 0.3125, (double)result.getValue("0"), 0.0000001d);
+		   assertEquals("Should return 0.8750", 0.8750, (double)result.getValue("1"), 0.0000001d);
+		   assertEquals("Should return 1.0000", 1.000, (double)result.getValue("2"), 0.0000001d);
+		   
 		}
 			catch (Exception e) {
 				fail("error:" + e);
@@ -443,19 +497,15 @@ public class DataUtilitiesTest {
 	
 	
 	@Test
-	public void testGetCumulativePercentagesReturnsInvalidParameterExceptionWhenDataisEmpty() {
-
-		DefaultKeyedValues dataKeys = new DefaultKeyedValues();
-			
-		
+	public void testGetCumulativePercentagesReturnsIllegalArgumentExceptionWhenDataisNull() {
 		
 		try {
-			DataUtilities.getCumulativePercentages(dataKeys);
+			DataUtilities.getCumulativePercentages(null);
 			
 		}
 			catch (Exception e) {
 				assertTrue("Correct exception type thrown",
-						e.getClass().equals(InvalidParameterException.class));
+						e.getClass().equals(IllegalArgumentException.class));
 			}
 			
 		}
