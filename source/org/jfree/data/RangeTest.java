@@ -2,6 +2,7 @@ package org.jfree.data;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import org.jfree.data.Range; 
 import org.junit.*;
@@ -329,7 +330,7 @@ public class RangeTest {
 	@Test
 	public void testCombineReturnsNullRangeWhenBothRangesAreNull() {
 		assertEquals("Both Ranges are equal to null so should return null range",	
-				null, Range.combine(null, new Range(2, 13)));
+				null, Range.combine(null, null));
 	}
 	
 	@Test
@@ -346,8 +347,13 @@ public class RangeTest {
 	
 	@Test
 	public void testCombineReturnsRange1WhenRange1IsValidAndRange2IsWithinRange1() {
+		try {
 		assertEquals("Range1 is valid and range2 is within range1 so should return range1",	
 				new Range(-3, 34), Range.combine(new Range(-3, 34), new Range(7, 18)));
+		}
+		catch (Exception e) {
+			fail("Did not return Range(-3, 34). " + e.getMessage());
+		}
 	}
 	
 	@Test
@@ -358,8 +364,13 @@ public class RangeTest {
 	
 	@Test
 	public void testCombineReturnsRangeWithLowerBoundOfRange1AndUpperBoundOfRange2WhenRange1IsValidAndRange2ExtendsOutsideOfRange1ToTheRight() {
-		assertEquals("Range1 is valid and range2 extends outsid eof range 1 to the right so should return range with lower bound of range1 and upper bound of range2",	
+		try {
+			assertEquals("Range1 is valid and range2 extends outsid eof range 1 to the right so should return range with lower bound of range1 and upper bound of range2",	
 				new Range(58, 111), Range.combine(new Range(58, 100), new Range(92, 111)));
+		}
+		catch (Exception e) {
+			fail("Did not return Range(58, 111). " + e.getMessage());
+		}
 	}
 	
 	@Test
@@ -376,31 +387,52 @@ public class RangeTest {
 	
 	@Test
 	public void testCombineReturnsRangeWithLowerBoundOfRange2AndUpperBoundOfRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundSubtractOneandUpperBoundOfRange2IsWithinRange1() {
-		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound add one and upper bound of range2 is within range1 so should return range with lower bound of range2 and upper bound of range1",	
+		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound subtract one and upper bound of range2 is within range1 so should return range with lower bound of range2 and upper bound of range1",	
 				new Range(-48, 19), Range.combine(new Range(-47, 19), new Range(-48, 10)));
 	}
 	
 	@Test
 	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundAddOneandUpperBoundOfRange2IsWithinRange1() {
-		assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound add one and upper bound of range2 is within range1 so should return range with lower bound of range2 and upper bound of range1",	
+		try {
+			assertEquals("Range1 is valid and lower bound of range2 is equal to range1 lower bound add one and upper bound of range2 is within range1 so should return range with lower bound of range2 and upper bound of range1",	
 				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-46, 8)));
+		}
+		catch (Exception e) {
+			fail("Did not return Range(-47, 19). " + e.getMessage());
+		}
 	}
 	
 	@Test
 	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBound() {
-		assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound and lower bound of range2 is within range1 so should return range1",	
-				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-40, 19)));
+		try {
+			assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound and lower bound of range2 is within range1 so should return range1",	
+					new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-40, 19)));
+		}
+		catch (Exception e) {
+			fail("Did not return Range(-47, 19). " + e.getMessage());
+		}
+		
 	}
 	
 	@Test
 	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBoundSubtractOne() {
-		assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound subtract one and lower bound of range2 is within range1 so should return range1",	
+		try {
+			assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound subtract one and lower bound of range2 is within range1 so should return range1",	
 				new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-36, 18)));
+		}
+		catch (Exception e) {
+			fail("Did not return Range(-47, 19). " + e.getMessage());
+		}
 	}
 	
 	@Test
 	public void testCombineReturnsRangeWithLowerBoundOfRange1AndUpperBoundOfRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBoundAddOne() {
-		assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound subtract one and lower bound of range2 is within range1 so should return range1",	
+		try {
+			assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound add one and lower bound of range2 is within range1 so should return range1",	
 				new Range(-47, 20), Range.combine(new Range(-47, 19), new Range(-36, 20)));
+		}
+		catch (Exception e) {
+			fail("Did not return Range(-47, 20). " + e.getMessage());
+		}
 	}
 }
