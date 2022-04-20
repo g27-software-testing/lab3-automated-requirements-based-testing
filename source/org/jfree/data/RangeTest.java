@@ -270,7 +270,7 @@ public class RangeTest {
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundEqualToValueWhenValueIsOutsideOfRangeOnTheLeftAndLowerBoundOfRangeIsNegativeWhileUpperBoundIsPositive() {
 		assertEquals("Value is outside of range and the lower bound of the range is negative while the upper bound is positive so should return range with same upper bound and lower bound equal to value",
-				new Range(-37, -2), Range.expandToInclude(new Range(-8, -2), -37));
+				new Range(-29, 66), Range.expandToInclude(new Range(-23, 66), -29));
 	}
 	
 	@Test
@@ -403,10 +403,10 @@ public class RangeTest {
 	}
 	
 	@Test
-	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsWithinRange1AndUpperBoundOfRange2IsEqualToRange1UpperBound() {
+	public void testCombineReturnsRange1WhenRange1IsValidAndRange2IsEqualToRange1() {
 		try {
-			assertEquals("Range1 is valid and upper bound of range2 is equal to range1 upper bound and lower bound of range2 is within range1 so should return range1",	
-					new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-40, 19)));
+			assertEquals("Range1 is valid and range2 is equal to range1 so should return range1",	
+					new Range(-47, 19), Range.combine(new Range(-47, 19), new Range(-47, 19)));
 		}
 		catch (Exception e) {
 			fail("Did not return Range(-47, 19). " + e.getMessage());
