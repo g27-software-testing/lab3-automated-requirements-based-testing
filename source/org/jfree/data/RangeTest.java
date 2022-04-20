@@ -435,4 +435,46 @@ public class RangeTest {
 			fail("Did not return Range(-47, 20). " + e.getMessage());
 		}
 	}
+	
+	//Lab 3 - White Box Testing for shift(Range base, double delta, boolean allowZeroCrossing) & shift(Range base, double delta)
+	
+	@Test
+	public void testShiftReturnsRangeWithLowerBoundof3AndUpperBoundOf10WhenRangePassedInHasLowerBoundOf1AndUpperBoundOf8AndDeltaIs2AndAllowZeroCrossingIsTrue() {
+	
+	try {
+		assertEquals("Should return Range(1,10)", new Range(3,10), Range.shift(new Range(1,8), 2, true));
+	
+
+	}
+	catch (Exception e) {
+		fail("Did not return Range(1,10)");
+	}
+	}
+	
+	@Test
+	public void testShiftReturnsRangeWithLowerBoundof0AndUpperBoundOf10WhenRangePassedInHasLowerBoundOfNegative1AndUpperBoundOf8AndDeltaIs2AndAllowZeroCrossingIsFalse() {
+	
+	try {
+		assertEquals("Should return Range(0,10)", new Range(0,10), Range.shift(new Range(-1,8), 2, false));
+	
+
+	}
+	catch (Exception e) {
+		fail("Did not return Range(0,10)");
+	}
+	}
+	
+	@Test
+	public void testShiftReturnsRangeWithLowerBoundof0AndUpperBoundOf10WhenRangePassedInHasLowerBoundOfNegative1AndUpperBoundOf8AndDeltaIs2() {
+	
+	try {
+		assertEquals("Should return Range(0,10)", new Range(0,10), Range.shift(new Range(-1,8), 2));
+	
+
+	}
+	catch (Exception e) {
+		fail("Did not return Range(0,10)");
+	}
+	}
+	
 }

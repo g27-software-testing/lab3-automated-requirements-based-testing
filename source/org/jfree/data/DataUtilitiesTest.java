@@ -21,6 +21,7 @@ public class DataUtilitiesTest {
 	private Values2D values2DEmpty;
 	private DefaultKeyedValues dataKeys;
 	private Values2D values2DNull = null;
+	private Values2D values2DNullItems = null;
 	
 	@Before
 	public void setUp()
@@ -66,6 +67,16 @@ public class DataUtilitiesTest {
 		         //0 1 4 1 4 1
 		        // 1 4 4 9 5 2
 
+		DefaultKeyedValues2D values2DNullItemsTemp = new DefaultKeyedValues2D();
+		
+		values2DNullItems = values2DNullItemsTemp;
+
+		values2DNullItemsTemp.addValue(null, 0, 0);
+		values2DNullItemsTemp.addValue(null, 1, 0);
+		
+		values2DNullItemsTemp.addValue(null, 0, 1);
+		values2DNullItemsTemp.addValue(null, 1, 1);
+		
 
 }
 
@@ -75,6 +86,7 @@ public class DataUtilitiesTest {
 		values2D = null;
 		values2DEmpty = null;
 		dataKeys = null;
+		values2DNullItems = null;
 	}
 	
 	
@@ -272,6 +284,20 @@ public class DataUtilitiesTest {
 		
 	}
 	
+	//Lab 3 - White Box Testing
+	@Test
+	public void testCalculateColumnTotalReturnsZeroWhenColumnInDataContainsOnlyNullValues() {
+		
+		try {
+			
+			assertEquals("Should return 0.0", 0, DataUtilities.calculateColumnTotal(values2DNullItems, 0), 0.0000001d);
+			
+		}
+		catch (Exception e) {
+			fail("Did not return 0.0");
+		}
+		}
+	
 	//calculateRowTotal() tests
 	@Test
 	public void testCalculateRowTotalReturnsZeroWhenRowisNegative4() {
@@ -399,6 +425,22 @@ public class DataUtilitiesTest {
 		}
 			
 	}
+	
+	
+	//Lab 3 - White box testing
+	
+	@Test
+	public void testCalculateRowTotalReturnsZeroWhenRowInDataContainsOnlyNullValues() {
+		
+		try {
+			
+			assertEquals("Should return 0.0", 0, DataUtilities.calculateRowTotal(values2DNullItems, 0), 0.0000001d);
+			
+		}
+		catch (Exception e) {
+			fail("Did not return 0.0");
+		}
+		}
 	
 	//Tests for createNumberArray()
 	
