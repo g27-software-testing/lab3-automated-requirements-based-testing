@@ -565,6 +565,21 @@ public class RangeTest {
 					rangeObjectUnderTestEquals.equals(new Range(-17, 99)));
 		}
 		
+		//Lab3 White-box tests for hashCode()
+		
+		  @Test
+		   public void testHashCodeReturnsSameIntWithTwoObjectsWithEqualRangeUpperandRangeLower() {
+		       Range x = new Range(0,10);
+		       Range y = new Range(0,10);
+		       assertEquals(x,y);
+		       try {
+		    	   assertEquals(x.hashCode(), y.hashCode());
+		       }
+		       catch (Exception e) {
+		    	   fail("Did not return same int");
+		       }
+		   }
+		
 		
 	
 }
