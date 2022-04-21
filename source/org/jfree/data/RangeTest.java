@@ -2,7 +2,11 @@ package org.jfree.data;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
+
+import java.security.InvalidParameterException;
 
 import org.jfree.data.Range; 
 import org.junit.*;
@@ -13,7 +17,9 @@ public class RangeTest {
 	private Range rangeObjectUnderTestContains;
 	private Range rangeObjectUnderTestIntersects;
 	private Range rangeObjectUnderTestConstrain;
-	
+	private Range rangeObjectUnderTestGetLength;
+	private Range rangeObjectUnderTestGetCentralValue;
+	private Range rangeObjectUnderTestEquals;
 	
 
 	@Before
@@ -21,11 +27,16 @@ public class RangeTest {
 		rangeObjectUnderTestContains = new Range(5, 22);
 		rangeObjectUnderTestIntersects = new Range(-11, 74);
 		rangeObjectUnderTestConstrain = new Range(-27, 57);
+		rangeObjectUnderTestGetLength = new Range(-9, 8);
+		rangeObjectUnderTestGetCentralValue = new Range(-5, 15);
+		rangeObjectUnderTestEquals = new Range(-17, 21);
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	//Lab2 Equivalence Class tests for contains(double)
 
 	@Test
 	public void testContainsReturnsTrueWhenValueInsideRange() {
@@ -44,6 +55,8 @@ public class RangeTest {
 		assertEquals("Value is outside of the range on the right side so should return false",	
 				false, rangeObjectUnderTestContains.contains(36.27561));
 	}
+	
+	//Lab2 Boundary Value Analysis tests for contains(double)
 	
 	@Test
 	public void testContainsReturnsTrueWhenValueEqualToLowerBoundOfRange() {
@@ -81,6 +94,8 @@ public class RangeTest {
 				false, rangeObjectUnderTestContains.contains(23));
 	}
 	
+	//Lab2 Equivalence Class tests for intersects(double, double)
+	
 	@Test
 	public void testIntersectsReturnsTrueWhenLowerAndUpperInputsIntersectWithRange() {
 		assertEquals("Lower and upper inputs intersect with range so should return true",	
@@ -104,6 +119,8 @@ public class RangeTest {
 		assertEquals("Neither lower or upper input intersects with range",	
 				false, rangeObjectUnderTestIntersects.intersects(-33, -27));
 	}
+	
+	//Lab2 Boundary Value Analysis tests for intersects(double, double)
 	
 	@Test
 	public void testIntersectsReturnsTrueWhenLowerInputIsEqualToLowerBoundOfRangeandUpperInputIsOutsideOfRange() {
@@ -177,6 +194,8 @@ public class RangeTest {
 				false, rangeObjectUnderTestIntersects.intersects(-91.0, 75));
 	}
 	
+	//Lab2 Equivalence Class tests for constrain(double)
+	
 	@Test
 	public void testConstrainReturnsLowerBoundOfRangeWhenValueOutsideOfRangeOnTheLeft() {
 		assertEquals("Value outside of range on the left so should return -27",	
@@ -194,6 +213,8 @@ public class RangeTest {
 		assertEquals("Value is equal to number in range so should return given number",	
 				15.762, rangeObjectUnderTestConstrain.constrain(15.762), 0);
 	}
+	
+	//Lab2 Boundary Value Analysis tests for constrain(double)
 	
 	@Test
 	public void testConstrainReturnsLowerBoundOfRangeWhenValueIsEqualToLowerBoundOfRange() {
@@ -230,6 +251,8 @@ public class RangeTest {
 		assertEquals("Value is equal to upper bound of range add one so should return upper bound of range",	
 				57.0, rangeObjectUnderTestConstrain.constrain(58), 0);
 	}
+	
+	//Lab2 Equivalence Class tests for expandToInclude(Range, double)
 	
 	@Test
 	public void testExpandToIncludeReturnsRangeWithSameUpperBoundAndLowerBoundEqualToValueWhenValueIsOutsideOfRangeOnTheLeftAndAllOfRangeIsPositive() {
@@ -291,6 +314,8 @@ public class RangeTest {
 				new Range(15.0, 15.0), Range.expandToInclude(null, 15));
 	}
 	
+	//Lab2 Boundary Value Analysis tests for expandToInclude(Range, double)
+	
 	@Test
 	public void testExpandToIncludeReturnsSameRangeWhenValueIsEqualToLowerBoundOfRange() {
 		assertEquals("Value is equal to lower of range so should return range with same upper and lower bound",	
@@ -326,6 +351,8 @@ public class RangeTest {
 		assertEquals("Value is equal to upper bound of range add one so should return range with same lower bound and upper bound equal to value",	
 				new Range(34.0, 57.0), Range.expandToInclude(new Range(34, 56), 57));
 	}
+	
+	//Lab2 Equivalence Class tests for combine(Range, Range)
 	
 	@Test
 	public void testCombineReturnsNullRangeWhenBothRangesAreNull() {
@@ -378,6 +405,8 @@ public class RangeTest {
 		assertEquals("Range1 is valid and range2 extends outside of range 1 to the right and left so should return range with lower bound of range1 and upper bound of range2",	
 				new Range(5, 99), Range.combine(new Range(31, 78), new Range(5, 99)));
 	}
+	
+	//Lab2 Boundary Value Analysis tests for combine(Range, Range)
 	
 	@Test
 	public void testCombineReturnsRange1WhenRange1IsValidAndLowerBoundOfRange2IsEqualToRange1LowerBoundandUpperBoundOfRange2IsWithinRange1() {
@@ -476,5 +505,66 @@ public class RangeTest {
 		fail("Did not return Range(0,10)");
 	}
 	}
+	
+	//Lab3 White-box tests for Expand(Range, double, double)
+	
+	@Test
+	public void testExpandReturnsInvalidParameterExceptionWhenRangeIsNull() {
+		
+		try {
+			Range.expand(null, 0.25, 0.35);
+			fail("No exception thrown. Expected outcome was a thrown exception of type: InvalidParameterException");
+
+		}
+		catch (Exception e) {
+			assertTrue("Correct exception type thrown",
+					e.getClass().equals(InvalidParameterException.class));
+		}
+		
+	}
+	
+	@Test
+	public void testExpandReturnsRangeWithExpandedLowerBoundAndUperBoundWhenRangeIsValidAndLowerMarginAndUpperMarginAreValid() {
+		
+		try {
+			assertEquals("Should return Range(4,21)", 
+					new Range(4,21), Range.expand(new Range(10, 20), 0.6, 0.1));
+			
+
+		}
+		catch (Exception e) {
+			fail("Did not return Range[4, 21]");
+		}
+		
+	}
+	
+	//Lab3 White-box tests for getLength()
+	@Test
+	public void testGetLengthReturnsSeventeenWhenLowerBoundOfRangeIsNegativeNineAndUpperBoundIsEight() {
+		assertEquals("Should return a length of 17",	
+				17, rangeObjectUnderTestGetLength.getLength(), 0);
+	}
+	
+	//Lab3 White-box tests for getCentralValue()
+		@Test
+		public void testGetCentralValueReturnsFiveWhenLowerBoundOfRangeIsNegativeFiveAndUpperBoundIsFifteen() {
+			assertEquals("Should return a central value of 10",	
+					5, rangeObjectUnderTestGetCentralValue.getCentralValue(), 0);
+		}
+	
+	//Lab3 White-box tests for equals()
+		@Test
+		public void testEqualsReturnsFalseWhenLowerBoundOfInputtedRangeNotEqualToLowerBoundOfSetRange() {
+			assertFalse("Should return false", 
+					rangeObjectUnderTestEquals.equals(new Range(4, 21)));
+			}
+		
+		@Test
+		public void testEqualsReturnsFalseWhenUpperBoundOfInputtedRangeNotEqualToUpperBoundOfSetRangeAndLowerBoundBoundOfInputtedRangeEqualToLowerboundOfSetRange() {
+			assertFalse("Should return false", 
+					rangeObjectUnderTestEquals.equals(new Range(-17, 99)));
+		}
+		
+		
 	
 }
